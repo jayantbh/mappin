@@ -47,6 +47,7 @@
     pointer-events: none;
     z-index: 8;
     box-sizing: border-box;
+    cursor: pointer;
     transform: translateY(15px);
     transition: 0.2s transform, 0.2s opacity, 0.2s max-height, 0.2s width;
 
