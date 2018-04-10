@@ -1,0 +1,106 @@
+#photo-map--container {
+  height: 100vh;
+  width: 100vw;
+}
+
+.marker-component:hover {
+  z-index: 4 !important;
+}
+
+.twitter-marker {
+  height: 20px;
+  width: 20px;
+  padding: 4px;
+  background: white;
+  border: 2px solid #55acee;
+  border-radius: 50%;
+  cursor: zoom-in;
+  user-select: none;
+  z-index: 9;
+  transform: scale(1);
+  opacity: 1;
+  transition: 0.2s transform, 0.2s opacity;
+
+  &.shrink {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+
+  + .twitter-marker--content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #efefef url('../assets/loader.svg') no-repeat center;
+    background-size: 40px;
+    width: 200px;
+    min-height: 200px;
+    max-height: 200px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 15px;
+    margin: auto;
+    border-radius: 5px;
+    border: 2px solid #55acee;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 8;
+    box-sizing: border-box;
+    transform: translateY(15px);
+    transition: 0.2s transform, 0.2s opacity, 0.2s max-height, 0.2s width;
+
+    .map-photo {
+      max-height: inherit;
+    }
+
+    &:hover, &.active {
+      pointer-events: initial;
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    &:hover {
+      width: 400px;
+      max-height: 400px;
+    }
+  }
+
+  &:hover {
+    + .twitter-marker--content {
+      pointer-events: initial;
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  img {
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+  }
+}
+
+.photo-popup {
+  max-width: 200px;
+
+  &:hover {
+    z-index: 4;
+  }
+
+  & .mapboxgl-popup-content {
+    padding: 5px;
+    word-wrap: break-word;
+  }
+}
+
+.caption {
+  position: absolute;
+  bottom: 0;
+  line-height: 1;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.75);
+  width: 100%;
+  box-sizing: border-box;
+  text-align: right;
+}
