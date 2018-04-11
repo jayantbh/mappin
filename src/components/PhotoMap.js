@@ -5,6 +5,7 @@ import '../../node_modules/mapbox-gl/dist/mapbox-gl.css';
 
 import './PhotoMap.css';
 import logo from '../assets/flickr.svg';
+import heart from '../assets/heart.svg';
 
 import { MAPBOX_KEY } from '../keys';
 
@@ -43,6 +44,29 @@ export default class PhotoMap extends Component {
     setTimeout(() => el.classList.remove('shrink'), 100);
   }
 
+  handleMarkerAdditionForFavs(el, photo) {
+    if (!el) return;
+    let favs = this.props.favs;
+    let isFavd = favs.filter((fav) => fav.id === photo.id).length;
+    if (isFavd) el.classList.add('is-fave');
+  }
+
+  toggleImageFave(e, photo) {
+    e.stopPropagation();
+
+    let favs = this.props.favs;
+    let isFavd = favs.filter((fav) => fav.id === photo.id).length;
+    if (isFavd) {
+      e.target.classList.remove('is-fave');
+      this.props.handleFaveToggle(photo, false);
+    } else {
+      photo = Object.assign(photo, {
+        addedAt: new Date()
+      });
+      this.props.handleFaveToggle(photo, true);
+    }
+  }
+
   render() {
     return (
       <div>
@@ -54,7 +78,7 @@ export default class PhotoMap extends Component {
           containerStyle={this.state.containerStyle}
           >
             {
-              this.props.photos.map((photo, i) => {
+              this.props.photos.map((photo) => {
                 return (
                   <Marker
                     key={photo.id}
@@ -66,8 +90,8 @@ export default class PhotoMap extends Component {
                     <div className="provider-marker shrink" ref={(el) => this.handleMarkerAddition(el)}>
                       <img src={logo} alt="marker"/>
                     </div>
-                    <div className="provider-marker shrink" ref={(el) => this.handleMarkerAddition(el)}>
-                      <img src={logo} alt="marker"/>
+                    <div className="provider-marker add-to-favs" ref={(el) => this.handleMarkerAdditionForFavs(el, photo)} onClick={(e) => this.toggleImageFave(e, photo)}>
+                      <img src={heart} height="16" width="16" alt="marker"/>
                     </div>
                     <div className="provider-marker--content" ref={(el) => this.handlePopupAutoShow(el, photo)}>
                       <span className="caption">{photo.text}</span>

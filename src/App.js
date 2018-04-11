@@ -13,6 +13,7 @@ class App extends Component {
     this.state = {
       track: window.localStorage.trackingTerm || 'planets',
       photos: [],
+      favs: [],
       limit: IMAGE_LOOKOUP_LIMIT,
       arrayLimit: 10000,
       isUpdatingTrackingTerm: false,
@@ -20,12 +21,13 @@ class App extends Component {
       userProfile: null
     };
 
-    this.handleResponse();
+    this.lookupImages();
   }
 
   componentWillMount() {
     firebase.auth().signInAnonymously().then((user) => {
       this.setState({ isLoggedIn: !!user, userProfile: user });
+      this.loadFavs();
     });
   }
 
@@ -39,43 +41,77 @@ class App extends Component {
     this.unregisterAuthObserver();
   }
 
-  async handleResponse() {
+  async loadFavs() {
+    let favs = await firebase.database().ref(`/${this.state.userProfile.uid}`).once('value');
+    favs = favs.val();
+    if (!favs) return;
+
+    favs = Object.keys(favs).map(k => Object.assign(favs[k], { generatedKey: k }));
+
+    let photos = this.state.photos.slice(0);
+
+    favs.forEach(fav => {
+      let index = photos.map(p => p.id).indexOf(fav.id);
+      photos[index] = fav;
+    });
+
+    this.setState({ favs, photos });
+  }
+
+  async lookupImages() {
     let photos = await imageLookup(this.state.track);
     photos = photos.photos.photo;
     let processedPhotos = photos.map((photo) => {
       return {
         id: photo.id,
         text: photo.title,
-        full_name: '',
         point: [photo.longitude, photo.latitude],
         url: photo.url_z
       };
     });
     this.setState({ photos: processedPhotos, isUpdatingTrackingTerm: false });
 
-    setTimeout(() => this.handleResponse(), 10000)
+    setTimeout(() => this.lookupImages(), 10000)
   }
 
   lastFewPhotos = () => this.state.photos.slice(-1 * this.state.limit);
 
-  updateTrackingTerm(e, form) {
+  updateTrackingTerm(e) {
     e.preventDefault();
     const value = e.currentTarget['tracking-term'].value;
     this.setState({ track: value, isUpdatingTrackingTerm: true });
     window.localStorage.trackingTerm = value;
   }
 
-  handleSession(e, form) {
+  handleFaveToggle(photo, toAdd) {
+    let favs = this.state.favs.slice(0);
+    let photos = this.state.photos.slice(0);
+    let index = photos.map(p => p.id).indexOf(photo.id);
 
+    photo = photos[index];
+
+    if (toAdd) {
+      firebase.database().ref().child(`/${this.state.userProfile.uid}`).push(photo).once('value').then((newFav) => {
+        photo = Object.assign(photo, { generatedKey: newFav.key });
+        favs.push(photo);
+        photos[index] = photo;
+        this.setState({ favs, photos });
+      });
+    } else {
+      let fi = favs.map(fav => fav.id).indexOf(photo.id);
+      favs.splice(fi, 1);
+      this.setState({ favs });
+      firebase.database().ref().child(`/${this.state.userProfile.uid}/${photo.generatedKey}`).remove();
+    }
   }
 
   render() {
     return (
       <div>
-        <PhotoMap photos={this.lastFewPhotos()} />
+        <PhotoMap photos={this.lastFewPhotos()} favs={this.state.favs} handleFaveToggle={(photo, toAdd) => this.handleFaveToggle(photo, toAdd)} />
         <div className="overlay-interface">
           <header>
-            <form className="tracking-term-component" onSubmit={(e, form) => this.updateTrackingTerm(e, form)}>
+            <form className="tracking-term-component" onSubmit={(e) => this.updateTrackingTerm(e)}>
               <label htmlFor="tracking-term" className="header-form-label">Search Term</label>
               <div className="tracking-term-input">
                 <input id="tracking-term"

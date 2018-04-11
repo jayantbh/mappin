@@ -3,30 +3,9 @@
   width: 100vw;
 }
 
-.marker-component:hover {
-  z-index: 4 !important;
-}
+.marker-component {
 
-.provider-marker {
-  height: 20px;
-  width: 20px;
-  padding: 4px;
-  background: white;
-  border: 2px solid #55acee;
-  border-radius: 50%;
-  cursor: zoom-in;
-  user-select: none;
-  z-index: 9;
-  transform: scale(1);
-  opacity: 1;
-  transition: 0.2s transform, 0.2s opacity;
-
-  &.shrink {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-
-  + .provider-marker--content {
+  .provider-marker--content {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -55,6 +34,10 @@
       max-height: inherit;
     }
 
+    &.add-to-favs {
+      left: 35px;
+    }
+
     &:hover, &.active {
       pointer-events: initial;
       transform: translateY(0);
@@ -68,17 +51,48 @@
   }
 
   &:hover {
-    + .provider-marker--content {
+    z-index: 4 !important;
+    .provider-marker--content {
       pointer-events: initial;
       transform: translateY(0);
       opacity: 1;
     }
+  }
+}
+
+.provider-marker {
+  height: 20px;
+  width: 20px;
+  padding: 4px;
+  background: white;
+  border: 2px solid #55acee;
+  border-radius: 50%;
+  cursor: zoom-in;
+  user-select: none;
+  z-index: 9;
+  transform: scale(1);
+  opacity: 1;
+  transition: 0.2s transform, 0.2s opacity;
+
+  &.shrink {
+    transform: scale(0.6);
+    opacity: 0;
   }
 
   img {
     height: 100%;
     width: 100%;
     pointer-events: none;
+  }
+}
+
+.add-to-favs {
+  background-color: #bbbbbb;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &.is-fave {
+    background-color: #FF707D;
   }
 }
 
@@ -99,7 +113,7 @@
   position: absolute;
   bottom: 0;
   line-height: 1;
-  padding: 5px;
+  padding: 5px 5px 16px;
   background: rgba(255, 255, 255, 0.75);
   width: 100%;
   box-sizing: border-box;
