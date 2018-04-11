@@ -15,15 +15,19 @@
   }
 }
 
-.tracking-term-component {
-  display: flex;
-  flex-direction: column;
+header {
   background: #f0e9d8;
   border: 1px solid #3d3fa0;
   padding: 5px;
   width: 40%;
   min-width: 350px;
   max-width: 100vw;
+  display: flex;
+}
+
+.tracking-term-component {
+  display: flex;
+  flex-direction: column;
 }
 
 .tracking-term-input {
@@ -31,7 +35,7 @@
   align-items: center;
 }
 
-.tracking-term-label {
+.header-form-label {
   color: #d3504f;
 }
 
@@ -44,18 +48,33 @@
   border-bottom: 1px solid #3d3fa0;
   background: darken(#f0e9d8, 5%);
   color: #d3504f;
+  margin-right: 9px;
 }
 
-.update-term-button {
+.header-form-button {
   color: #d3504f;
   border: none;
-  margin-left: 9px;
   height: 1.8rem;
   font-size: 1rem;
   line-height: 1.7rem;
   width: 40px;
+  margin: 2px;
 }
 
 .updating-term {
   height: 100%;
+}
+
+.session-control-component {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 9px;
+  border-left: 1px solid #3d3fa0;
+  padding-left: 9px;
+}
+
+.session-control-label {
+  padding-top: 7px;
+  color: #3d3fa0;
 }
