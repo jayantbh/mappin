@@ -63,10 +63,13 @@ export default class PhotoMap extends Component {
                     className="marker-component"
                     onClick={() => this.centerOnPoint(photo.point, 11)}
                   >
-                    <div className="twitter-marker shrink" ref={(el) => this.handleMarkerAddition(el)}>
+                    <div className="provider-marker shrink" ref={(el) => this.handleMarkerAddition(el)}>
                       <img src={logo} alt="marker"/>
                     </div>
-                    <div className="twitter-marker--content" ref={(el) => this.handlePopupAutoShow(el, photo)}>
+                    <div className="provider-marker shrink" ref={(el) => this.handleMarkerAddition(el)}>
+                      <img src={logo} alt="marker"/>
+                    </div>
+                    <div className="provider-marker--content" ref={(el) => this.handlePopupAutoShow(el, photo)}>
                       <span className="caption">{photo.text}</span>
                       <img className="map-photo loading-photo" src={photo.url} alt={photo.text}/>
                     </div>
