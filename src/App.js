@@ -3,6 +3,7 @@ import './App.css';
 
 import PhotoMap from './components/PhotoMap';
 import loader from './assets/loader.svg';
+import heart from './assets/heart.svg';
 
 import firebase from './helpers/firebase';
 import { imageLookup, IMAGE_LOOKOUP_LIMIT } from './helpers/utils';
@@ -18,7 +19,8 @@ class App extends Component {
       arrayLimit: 10000,
       isUpdatingTrackingTerm: false,
       isLoggedIn: false,
-      userProfile: null
+      userProfile: null,
+      showFaves: false
     };
 
     this.lookupImages();
@@ -128,13 +130,29 @@ class App extends Component {
                 </button>
               </div>
             </form>
-            <form className="session-control-component" onSubmit={(e, form) => this.handleSession(e, form)}>
+            <form className="generic-header-item session-control-component" onSubmit={(e, form) => this.handleSession(e, form)}>
               <span className="header-form-label">{ this.state.isLoggedIn ? 'Logged in' : 'Logging in' }</span>
               <div className="tracking-term-input">
                 <span className="session-control-label" type="submit">Anonymously</span>
               </div>
             </form>
+            <div className="generic-header-item faves-toggle">
+              <img className={this.state.showFaves ? "active" : ""} src={heart} height="20" width="20" alt="marker" onClick={() => this.setState({ showFaves: !this.state.showFaves })}/>
+            </div>
           </header>
+          <div className={"faves-list" + (this.state.showFaves ? "" : " hide-faves")}>
+            <div className="faves-list-wrapper">
+              {
+                this.state.favs.map(fav => {
+                  return (
+                    <div key={fav.id} className="fav-wrapper">
+                      <img src={fav.url} alt={fav.text}/>
+                    </div>
+                  );
+                })
+              }
+            </div>
+          </div>
         </div>
       </div>
     );

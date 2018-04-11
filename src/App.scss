@@ -23,6 +23,10 @@ header {
   min-width: 350px;
   max-width: 100vw;
   display: flex;
+  flex-shrink: 0;
+  margin-bottom: 9px;
+  z-index: 9;
+
 }
 
 .tracking-term-component {
@@ -66,7 +70,7 @@ header {
   color: #c0392b;
 }
 
-.session-control-component {
+.generic-header-item {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -78,4 +82,70 @@ header {
 .session-control-label {
   padding-top: 7px;
   color: #3d3fa0;
+}
+
+.faves-toggle {
+  padding-right: 4px;
+
+  img {
+    padding: 9px;
+    border-radius: 50%;
+    background-color: #bbbbbb;
+    transition: background-color 0.2s;
+    cursor: pointer;
+
+    &:hover, &.active {
+      background-color: #d3504f;
+    }
+  }
+}
+
+.faves-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  background: rgba(240, 233, 216, 0.75);
+  border: 1px solid #3d3f9f;
+  transform: translateY(0);
+  opacity: 1;
+  overflow-y: auto;
+  transition: transform 0.8s, opacity 0.4s;
+}
+
+.hide-faves {
+  transform: translateY(-120vh);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.faves-list-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-height: 80vh;
+}
+
+.fav-wrapper {
+  height: 200px;
+  width: 200px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 10px;
+  border-radius: 3px;
+  border: 1px solid #3d3f9f;
+  box-shadow: 0 0 0 0 #3d3f9f;
+  transition: box-shadow 0.2s;
+
+  img {
+    position: absolute;
+  }
+
+  &:hover {
+    box-shadow: 0 0 0 5px #3d3f9f;
+  }
 }
