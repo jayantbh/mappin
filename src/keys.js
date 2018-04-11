@@ -1,0 +1,2 @@
+export let MAPBOX_KEY = 'MAPBOX_API_KEY';
+export let FLICKR_KEY = 'FLICKR_CLIENT_ID';
