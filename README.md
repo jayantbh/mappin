@@ -1,6 +1,9 @@
 # Mappin
 Experimental Mapbox/Flickr project.
 
+> Note: This project is **incomplete** and currently **not being actively maintained**.
+
+## Screenshot
 ![snap](https://i.snag.gy/lciLGu.jpg)
 
 
